@@ -1,7 +1,7 @@
 
-(defconstant board-size 9   "Width and Height of the SuDoku board")
-(defconstant box-size   3   "Width and height of the 3x3 box")
-(defconstant empty      0   "Empty cell marker")
+(defconstant +size+ 9   "Width and Height of the SuDoku board")
+(defconstant +box-size+   3   "Width and height of the 3x3 box")
+(defconstant +empty+      0   "Empty cell marker")
 
 
 
@@ -9,7 +9,10 @@
 (defun modif_g (grid c l new)
   (setf (aref grid l c) new))
 
-(defun creer_grille (grid)
+(defun grid(cont)
+  (defvar *nom* (make-array '(9 9) :initial-element cont)))
+
+(defun create()
   (defvar *grid* (make-array '(9 9) :initial-contents 
 			   '((1 0 0 0 0 4 0 0 5)
 			     (0 0 0 9 5 0 0 8 0)
@@ -22,27 +25,35 @@
 			     (5 0 0 2 0 0 0 0 7)))))
 									
 
-(defun Afficher_Grille (grid)
+(defun complete(grid)
+    (dotimes (i +size+ t)
+    (dotimes (j +size+)
+      (when (zerop (aref grid i j))
+        (return-from complete)))))
+	       
+
+	
+"(defun usr(grid c l new)"	
+  
+(defun show-grid(grid)
   (format t "  | A  B  C | D  E  F | G  H  I |~%")
   (loop for i from 0 to 8
        do
        (loop for j from 0 to 8
 	    do
-	      (if (and (< 0 j) (= 0 (mod j 3)))
+	      (if (and (< 0 j) (zerop (mod j 3)))
 		  (format t "|"))
 	      
-	      (if (= 0 (mod j 9))
+	      (if (zerop (mod j 9))
 		  (format t "|~%"))
-	      (if (and (= 0 (mod i 3)) (= 0 j))
+	      (if (and (zerop (mod i 3)) (zerop j))
 		  (format t "**********************************~%"))
-	      (if (= 0 j)
+	      (if (zerop j)
 		  (format t "~A |" i))
 	    
-	      (if (= 0 (aref grid i j))
+	      (if (zerop (aref grid i j))
 		  (format t "   ")
 		 (format t " ~A " (aref grid i j)))
-	      
-
 	      )))
 
   
