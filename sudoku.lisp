@@ -2,12 +2,12 @@
 (defconstant +size+ 9   "Width and Height of the SuDoku board")
 (defconstant +box-size+   3   "Width and height of the 3x3 box")
 (defconstant +empty+      0   "Empty cell marker")
+(defparameter alphabet (make-array 9 :initial-contents 
+				   '(A B C D E F G H I)))
+(defparameter CLV (make-array 3))
 
-
-
-
-(defun modif_g (grid c l new)
-  (setf (aref grid l c) new))
+(defun modif-g (grid tab)
+  (setf (aref grid (aref tab 1) (aref tab 0)) (aref tab 2)))
 
 (defun grid(cont)
   (defvar *nom* (make-array '(9 9) :initial-element cont)))
@@ -33,7 +33,21 @@
 	       
 
 	
-"(defun usr(grid c l new)"	
+(defun ask()
+  (format t "C L ?")
+  (let ((c (read))
+	(l (read)))
+
+   (block convertion 
+     (dotimes (i +size+)
+      (when (equal c (aref alphabet i))
+	(setf (aref CLV 0) i)
+	(return-from convertion))))
+      
+    (setf (aref CLV 1) l))
+  (format t "Valeur ?")
+  (let ((v (read)))
+    (setf (aref CLV 2) v)))
   
 (defun show-grid(grid)
   (format t "  | A  B  C | D  E  F | G  H  I |~%")
