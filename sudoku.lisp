@@ -1,19 +1,19 @@
-
 (defconstant +size+ 9   "Width and Height of the SuDoku board")
 (defconstant +box-size+   3   "Width and height of the 3x3 box")
 (defconstant +empty+      0   "Empty cell marker")
 (defparameter alphabet (make-array 9 :initial-contents 
 				   '(A B C D E F G H I)))
+(defvar *grid*)
 (defparameter CLV (make-array 3))
 
-(defun modif-g (grid tab)
-  (setf (aref grid (aref tab 1) (aref tab 0)) (aref tab 2)))
+(defun modif-g (grid)
+  (setf (aref grid (aref CLV 1) (aref CLV 0)) (aref CLV 2)))
 
 (defun grid(cont)
   (defvar *nom* (make-array '(9 9) :initial-element cont)))
 
 (defun create()
-  (defvar *grid* (make-array '(9 9) :initial-contents 
+  (setf *grid* (make-array '(9 9) :initial-contents 
 			   '((1 0 0 0 0 4 0 0 5)
 			     (0 0 0 9 5 0 0 8 0)
 			     (0 0 0 0 0 3 0 9 0)
@@ -34,7 +34,7 @@
 
 	
 (defun ask()
-  (format t "C L ?")
+  (format t "~%~%C L ?")
   (let ((c (read))
 	(l (read)))
 
@@ -71,8 +71,18 @@
 	      )))
 
   
+(defun play (grid)
+  (ask)
+  (if (not (complete grid))      ;; Mettre fonctionc check ici !!
+      (modif-g grid)
+      (format t "Action impossible")))
 
+      
 
-;(defun Sudoku (grid) 
-   ;(Afficher_Grille grid)
-
+(defun Sudoku (grid)
+  (create)
+  (loop while (not (complete grid))
+       do
+       (show-grid grid)
+       (play grid)))
+  
